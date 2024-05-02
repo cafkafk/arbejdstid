@@ -12,20 +12,21 @@ fn main() -> io::Result<()> {
 
     let time_only = NaiveTime::parse_from_str(&buffer, "%H:%M:%S").unwrap();
 
-    let local: DateTime<Local> = Local::now();
-
     println!(
         "delta: \t\t{time_only} -> {}",
-        local.time().format("%H:%M:%S").to_string()
+        Local::now().time().format("%H:%M:%S").to_string()
     );
 
-    let dt = NaiveTime::signed_duration_since(local.time(), time_only);
+    let dt = NaiveTime::signed_duration_since(Local::now().time(), time_only);
 
     let hours = (dt.num_seconds() / 60) / 60;
     let minutes = (dt.num_seconds() / 60) % 60;
     let seconds = dt.num_seconds() % 60;
 
-    println!("elapsed: \t{}:{}:{}", &hours, &minutes, &seconds);
+    println!(
+        "elapsed: \t{:0>2.}:{:0>2.}:{:0>2.}",
+        &hours, &minutes, &seconds
+    );
 
     let total = format!("{}.{:.0}", &hours, 100. / 60. * minutes as f32)
         .parse::<f64>()
