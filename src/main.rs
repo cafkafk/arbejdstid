@@ -14,7 +14,10 @@ fn main() -> io::Result<()> {
 
     let local: DateTime<Local> = Local::now();
 
-    println!("delta: \t\t{time_only} -> {buffer}");
+    println!(
+        "delta: \t\t{time_only} -> {}",
+        local.time().format("%H:%M:%S").to_string()
+    );
 
     let dt = NaiveTime::signed_duration_since(local.time(), time_only);
 
